@@ -25,7 +25,7 @@ VOC_CLASSES = (  # always index 0
     'sheep', 'sofa', 'train', 'tvmonitor')
 
 # note: if you used our download scripts, this should be right
-VOC_ROOT = osp.join(HOME, "data/VOCdevkit/")
+VOC_ROOT = osp.join('/content/SSD-EBM/data/VOCdevkit')
 
 
 class VOCAnnotationTransform(object):
@@ -124,6 +124,7 @@ class VOCDetection(data.Dataset):
 
         target = ET.parse(self._annopath % img_id).getroot()
         img = cv2.imread(self._imgpath % img_id)
+        #print('img: ', img)
         height, width, channels = img.shape
 
         if self.target_transform is not None:

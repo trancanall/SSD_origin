@@ -8,11 +8,12 @@ import torchvision.transforms as transforms
 import cv2
 import numpy as np
 
-COCO_ROOT = osp.join(HOME, 'data/coco/')
+COCO_ROOT = osp.join('/content/SSD-EBM', 'data/')
 IMAGES = 'images'
 ANNOTATIONS = 'annotations'
 COCO_API = 'PythonAPI'
 INSTANCES_SET = 'instances_{}.json'
+TEST_SET = 'image_info_test-dev2015'
 COCO_CLASSES = ('person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
                 'train', 'truck', 'boat', 'traffic light', 'fire', 'hydrant',
                 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog',
@@ -83,13 +84,13 @@ class COCODetection(data.Dataset):
         in the target (bbox) and transforms it.
     """
 
-    def __init__(self, root, image_set='trainval35k', transform=None,
+    def __init__(self, root, image_set='train2017', transform=None,
                  target_transform=COCOAnnotationTransform(), dataset_name='MS COCO'):
         sys.path.append(osp.join(root, COCO_API))
         from pycocotools.coco import COCO
         self.root = osp.join(root, IMAGES, image_set)
         self.coco = COCO(osp.join(root, ANNOTATIONS,
-                                  INSTANCES_SET.format(image_set)))
+                                   INSTANCES_SET.format(image_set)))
         self.ids = list(self.coco.imgToAnns.keys())
         self.transform = transform
         self.target_transform = target_transform
@@ -108,7 +109,21 @@ class COCODetection(data.Dataset):
 
     def __len__(self):
         return len(self.ids)
-
+      
+    def image_path_from_index(self, name, index):
+        if '2014' or '2015' in name:
+            file_name = ('COCO_' + name + '_' +
+                         str(index).zfill(12) + '.jpg')
+            image_path = osp.join(self.root, file_name)
+            assert osp.exists(image_path), \
+                'Path does not exist: {}'.format(image_path)
+        if '2017' in name:
+            file_name = (str(index).zfill(12) + '.jpg')
+            image_path = osp.join(self.root, name,file_name)
+            assert osp.exists(image_path), \
+                'Path does not exist: {}'.format(image_path)
+        return image_path
+    
     def pull_item(self, index):
         """
         Args:
