@@ -78,21 +78,21 @@ def train():
             args.dataset_root = COCO_ROOT
         cfg = coco
         dataset = COCODetection(root=args.dataset_root,
-                                transform=SSDAugmentation(cfg['min_dim'],
+                                transform=SSDAugmentation(300,
                                                           MEANS))
     elif args.dataset == 'VOC':
         if args.dataset_root == COCO_ROOT:
             parser.error('Must specify dataset if specifying dataset_root')
         cfg = voc
         dataset = VOCDetection(root=args.dataset_root,
-                               transform=SSDAugmentation(cfg['min_dim'],
+                               transform=SSDAugmentation(300,
                                                          MEANS))
 
     if args.visdom:
         import visdom
         viz = visdom.Visdom()
 
-    ssd_net = build_ssd('train', cfg['min_dim'], cfg['num_classes'])
+    ssd_net = build_ssd('train', 300, 21)
     net = ssd_net
 
     if args.cuda:
@@ -119,7 +119,7 @@ def train():
 
     optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=args.momentum,
                           weight_decay=args.weight_decay)
-    criterion = MultiBoxLoss(cfg['num_classes'], 0.5, True, 0, True, 3, 0.5,
+    criterion = MultiBoxLoss(21, 0.5, True, 0, True, 3, 0.5,
                              False, args.cuda)
 
     net.train()
@@ -148,7 +148,7 @@ def train():
                                   pin_memory=True)
     # create batch iterator
     batch_iterator = iter(data_loader)
-    for iteration in range(args.start_iter, cfg['max_iter']):
+    for iteration in range(args.start_iter, 120000):
         if args.visdom and iteration != 0 and (iteration % epoch_size == 0):
             update_vis_plot(epoch, loc_loss, conf_loss, epoch_plot, None,
                             'append', epoch_size)
@@ -157,7 +157,7 @@ def train():
             conf_loss = 0
             epoch += 1
 
-        if iteration in cfg['lr_steps']:
+        if iteration in (80000, 100000, 120000):
             step_index += 1
             adjust_learning_rate(optimizer, args.gamma, step_index)
 
