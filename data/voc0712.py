@@ -25,7 +25,7 @@ VOC_CLASSES = (  # always index 0
     'sheep', 'sofa', 'train', 'tvmonitor')
 
 # note: if you used our download scripts, this should be right
-VOC_ROOT = osp.join('/content/SSD-EBM/data/VOCdevkit')
+VOC_ROOT = osp.join('/content/SSD_origin/data/VOCdevkit')
 
 
 class VOCAnnotationTransform(object):

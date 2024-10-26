@@ -35,7 +35,7 @@ parser.add_argument('--resume', default=None, type=str,
                     help='Checkpoint state_dict file to resume training from')
 parser.add_argument('--start_iter', default=0, type=int,
                     help='Resume training at this iter')
-parser.add_argument('--num_workers', default=4, type=int,
+parser.add_argument('--num_workers', default=0, type=int,
                     help='Number of workers used in dataloading')
 parser.add_argument('--cuda', default=True, type=str2bool,
                     help='Use CUDA to train model')
@@ -49,7 +49,7 @@ parser.add_argument('--gamma', default=0.1, type=float,
                     help='Gamma update for SGD')
 parser.add_argument('--visdom', default=False, type=str2bool,
                     help='Use visdom for loss visualization')
-parser.add_argument('--save_folder', default='weights/',
+parser.add_argument('--save_folder', default='/content/drive/MyDrive/weights/',
                     help='Directory for saving checkpoint models')
 args = parser.parse_args()
 
@@ -193,7 +193,7 @@ def train():
 
         if iteration != 0 and iteration % 5000 == 0:
             print('Saving state, iter:', iteration)
-            torch.save(ssd_net.state_dict(), 'weights/ssd300_COCO_' +
+            torch.save(ssd_net.state_dict(), '/content/drive/MyDrive/weights/ssd300_orgin_' +
                        repr(iteration) + '.pth')
     torch.save(ssd_net.state_dict(),
                args.save_folder + '' + args.dataset + '.pth')

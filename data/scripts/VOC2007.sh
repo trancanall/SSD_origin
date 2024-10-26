@@ -7,9 +7,9 @@ start=`date +%s`
 if [ -z "$1" ]
   then
     # navigate to /content/data
-    echo "navigating to /content/SSD-EBM/data ..."
-    mkdir -p /content/SSD-EBM/data
-    cd /content/SSD-EBM/data
+    echo "navigating to /content/SSD_origin/data ..."
+    mkdir -p /content/SSD_origin/data
+    cd /content/SSD_origin/data
   else
     # check if is valid directory
     if [ ! -d $1 ]; then
