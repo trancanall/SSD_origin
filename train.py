@@ -39,7 +39,7 @@ parser.add_argument('--num_workers', default=0, type=int,
                     help='Number of workers used in dataloading')
 parser.add_argument('--cuda', default=True, type=str2bool,
                     help='Use CUDA to train model')
-parser.add_argument('--lr', '--learning-rate', default=1e-5, type=float,
+parser.add_argument('--lr', '--learning-rate', default=1e-3, type=float,
                     help='initial learning rate')
 parser.add_argument('--momentum', default=0.9, type=float,
                     help='Momentum value for optim')
@@ -196,7 +196,7 @@ def train():
             update_vis_plot(iteration, loss_l.data[0], loss_c.data[0],
                             iter_plot, epoch_plot, 'append')
 
-        if iteration != 0 and iteration % 5000 == 0:
+        if iteration != 0 and iteration % 2500 == 0:
             print('Saving state, iter:', iteration)
             torch.save(ssd_net.state_dict(), '/content/drive/MyDrive/weights/ssd300_orgin_' +
                        repr(iteration) + '.pth')
