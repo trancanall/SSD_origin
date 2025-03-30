@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import types
 from numpy import random
-
+import random as yasou
 
 def intersect(box_a, box_b):
     max_xy = np.minimum(box_a[:, 2:], box_b[2:])
@@ -235,7 +235,7 @@ class RandomSampleCrop(object):
         height, width, _ = image.shape
         while True:
             # randomly choose a mode
-            mode = random.choice(self.sample_options)
+            mode = yasou.choice(self.sample_options)
             if mode is None:
                 return image, boxes, labels
 
